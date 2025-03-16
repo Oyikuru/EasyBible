@@ -8,48 +8,48 @@ the bible by providing a platform for studying it.
 
 Most of my intentions were not met due to the limitations of my knowledge in programming
 especially in the collection section of the program. I wanted a text editor that could be 
-used easily without difficuly. The purpose is to avoid moving out of the program to look for another apps
-to write study notes. I also wated the text editor to have the ability to convert or save the text as wordocument
-and pdf or even html. all these things i failed to achieve.
-What i have now can basicly do some little formating playing around with tags.
-The user experince is deffinately not okay. Me as the prgrammer can use the text editor very well and get what i want but
-a user who knows nothing abou how the text editor was programmed will achieve nothing.
+used easily without difficult. The purpose is to avoid moving out of the program to look for another apps
+to write study notes. I also wanted the text editor to have the ability to convert or save the text as document
+and pdf or even html. all these things I failed to achieve.
+What I have now can basically do some little formating playing around with tags.
+The user experience is definitely not okay. Me as the programmer can use the text editor very well and get what i want but
+a user who knows nothing about how the text editor was programmed will achieve nothing.
 
-The notes taken by the user on verses are saved in an sqlite database which the user can extract all in text formart.
+The notes taken by the user on verses are saved in a sqlite database which the user can extract all in text format.
 this is already implemented. The format of the text file is in a way that it will be easy to create with it another database table
-in the orinal structure. The intention was to make a file out of the notes that can be shared so that those with this
-application will be able to open it and read it verse by verse just like the how the notes are read now
+in the original structure. The intention was to make a file out of the notes that can be shared so that those with this
+application will be able to open it and read it verse by verse just like how the notes are read now
 that if a user select a verse by placing the cursor on it, he can read the notes on that verse by clicking on the read note icon
 or from the context menu or from the menu bar in tools
 
 The reason why I am explaining all this is to get someone who can help me achieve my childhood dream
-of making a powerful bible program. I have to teach my self programming for this dream and this is what i can achieve
-so far. I am a self taught programmer that is also some of the reasons why my knowledge in programming is so much limited as
-most of the things i get from tutorials or stackoverflow. I need to see how someone experienced and knowledgable approaches
+of making a powerful bible program. I have to teach my self programming for this dream and this is what I can achieve
+so far. I am a self-taught programmer that is also some of the reasons why my knowledge in programming is so much limited as
+most of the things I get from tutorials or stackoverflow. I need to see how someone experienced and knowledgeable approaches
 and whites a whole application like this.
 
 Anyone who is willing can improve the program and make it better without changing my intentions of the app.
-You can change how the interface look and the generall accessbility without taking out an exixting feature.
+You can change how the interface look and the general accessibility without taking out an existing feature.
 You can add any feature as long as it will make studying the bible easy.
 You can add other bible versions
 Identify bugs and fix.
-Improve eixisting codes and functions.
+Improve existing codes and functions.
 NOTE: PLEASE, WHERE POSIBLE COMMENT YOUR CODE WELL AND GENERALLY MAKE IT EASY TO UNDERSTAND.
 
-For this program, i used tkinter, ttkbootstap for the gui, python 3.12
+For this program, I used tkinter, ttkbootstap for the gui, python 3.12
 You can use any other gui python library you are flexible as long as you will be able to achieve the same thing as my intention
 If you feel like rewriting the program in another language, C++, C#, C or Java can do. But you will have to let me know why first.
 
 This application is meant to be free and open source. Please when you improve this program, make it available for free
-and make the source code availble at community platforms.
-When you improve the program, let me know as well so that i can read and also improve my skills.
+and make the source code available at community platforms.
+When you improve the program, let me know as well so that I can read and also improve my skills.
 If you feel like giving me a credit for this, please feel free. I will appreciate is so much.
 
 
 
 This is software by the Heavenly City Community. Heavenly city community is a christian community or groups of people
-living in a christian lifestyle. As the leader, I have always dreamed of this application to surport us in our
-bible studies. You can surport us by improving it.
+living in a christian lifestyle. As the leader, I have always dreamed of this application to support us in our
+bible studies. You can support us by improving it.
 
 I am OYIKURU EMMANUEL
 Live in Gulu City, Uganda
@@ -74,21 +74,25 @@ import pythonbible as my_bible
 from hilights import Hilights, Notes
 from collects import Collection
 from reading_plan import Plan, PlanB
-from to_cvs import Ttext
+# from to_cvs import Ttext
+from dictionary import dictionary
+from present import slide_show, to_projector, present_bg
 # from to_pdf import Pdf
 # from audio import AudioPlayer
-from PIL import Image, ImageTk
+# from PIL import Image, ImageTk
 import os
-from pathlib import Path
-import shutil
+# from pathlib import Path
+# import shutil
 import webbrowser
 #from tkinter import ttk
 import sqlite3
-import sys
-import winreg
+# import sys
+# import winreg
 import platform
-import plistlib
-import appdirs
+# import plistlib
+# import appdirs
+# import time
+import subprocess
 
 root = Tk()
 root.title('Easy Bible')
@@ -99,9 +103,60 @@ root.wm_attributes('-fullscreen', False)
 # ctk.set_appearance_mode("light")
 # ctk.set_default_color_theme('blue')
 
+class History:
+	"""docstring for History"""
+	def __init__(self, theme, ref_bk, ref_ch):
+		super(History, self).__init__()
+		self.ref_bk = ref_bk 
+		self.ref_ch = ref_ch
+
+# class texttouadio(object):
+# 	"""docstring for tta"""
+# 	def __init__(self, arg):
+# 		super(texttouadio, self).__init__()
+#
+# 	def converter(self):
+# 		system=platform.system()
+# 		if system=='Linux':
+#
+# 			#for linux
+# 			# subprocess.run(['gedit', file_dir], check=True)
+# 			showerror('System error', 'Converter does not exist on this system.\nIts available only in windows 10 or 11.')
+# 		elif system =='Darwin':
+# 			#for mac
+# 			# subprocess.run(['open', '-a', 'TextEdit',file_dir])
+# 			showerror('System error', 'Converter does not exist on this system.\nIts available only in windows 10 or 11.')
+# 		elif system=='Windows':
+# 			#for windows
+# 			subprocess.run(['Speaker-TTS.exe'], check=True)
+# 		else:
+# 			showerror('System error', 'Converter does not exist on this system.\nIts available only in windows 10 or 11.')
+# root.bind('<Control-k>', texttouadio.converter)
+
+def save_history():
+	a = bk.get()
+	b = ch.get()
+	conn = sqlite3.connect('hilights.db')
+	c = conn.cursor()
+	sql = 'UPDATE history set books = ?, chapter = ?'
+	c.execute(sql, (a, b,))
+	conn.commit()
+
+conn = sqlite3.connect('hilights.db')
+c = conn.cursor()
+
+sq = 'SELECT * from history'
+r = c.execute(sq).fetchall()
+
+if r[0][1] == '':
+	History.ref_bk = 'Genesis'
+	History.ref_ch = 1
+else:
+	History.ref_bk = r[0][1]
+	History.ref_ch = r[0][2]
+
 #the program's styles and themes
 style = ttk.Style()
-style.theme_use('cosmo')
 style.configure('custom.Treeview', font =('Comic Sans', 12), rowheight = 30)
 style.configure('TButton', background = 'whitesmoke', foreground = 'black')
 style.configure('close.TButton', background = 'red',
@@ -112,6 +167,7 @@ style.configure('menubutton.TMenubutton', background = 'white', borderwidth = 0,
 style.configure('TCombobox', font = ('roboto', 16, 'bold'), pady = 10, 
 	padx = 10, border = 0, relief = 'flat', background = 'white')
 #style.configure('TListbox', font = ('Calibri', 12, 'bold'))
+History.theme = 'cosmo'
 
 #to handle themes properly,the highlighted section category tabs is created in two functions
 # tab_fx() and tab_fy()
@@ -154,6 +210,7 @@ def tab_fy():
 		label = tk.Label(tabs, background = cl, pady= 10, relief = 'solid', border =0)
 		label.pack(side = 'left', fill = 'x', expand = 1)
 		label.configure(background = cl)
+		ToolTip(label, text = 'Filter hilights for this color')
 
 #handling the the different themes, cosmo, flatly, darkly and superehero
 
@@ -168,6 +225,7 @@ def cosmo():
 	tab_fy()
 	tabs_fx()
 	hi_tool.configure(background = 'yellow')
+	present_bg()
 
 def flatly():
 	style.theme_use('flatly')
@@ -179,12 +237,13 @@ def flatly():
 	tab_fy()
 	tabs_fx()
 	hi_tool.configure(background = 'yellow')
-
+	History.theme = 'flatly'
+	present_bg()
 
 def darkly():
 	style.theme_use('darkly')
-	style.configure('button.TButton', borderwidth=0, background = '#171818', foreground = 'white')
-	style.configure('menubutton.TMenubutton', background = '#171818', borderwidth = 0, foreground = 'white')
+	style.configure('button.TButton', borderwidth=0, background = '#222222', foreground = 'white')
+	style.configure('menubutton.TMenubutton', background = '#222222', borderwidth = 0, foreground = 'white')
 	style.configure('Treeview', rowheight = 30,
 	 font = ('roboto', 11), border = 0, relief = 0)
 	
@@ -192,17 +251,169 @@ def darkly():
 	tab_fy()
 	tabs_fx()
 	hi_tool.configure(background = 'yellow')
+	present_bg()
 
 def superhero():
 	style.theme_use('superhero')
-	style.configure('button.TButton', borderwidth=0, background = '#284d6b', foreground = 'white')
-	style.configure('menubutton.TMenubutton', background = '#284d6b', borderwidth = 0, foreground = 'white')
+	style.configure('button.TButton', borderwidth=0, background = '#2b3e50', foreground = 'white')
+	style.configure('menubutton.TMenubutton', background = '#2b3e50', borderwidth = 0, foreground = 'white')
 	style.configure('Treeview', rowheight = 30,
  	 font = ('roboto', 11), border = 0, relief = 0)
 	
 	tab_fy()
 	tabs_fx()
 	hi_tool.configure(background = 'yellow')
+	present_bg()
+
+def morph():
+	style.theme_use('morph')
+	style.configure('button.TButton', borderwidth=0, background = '#D9E3F1', foreground = '#7B8AB8')
+	style.configure('menubutton.TMenubutton', background = '#D9E3F1', borderwidth = 0, foreground = '#7B8AB8')
+	style.configure('Treeview', rowheight = 30,
+ 	 font = ('roboto', 11), border = 0, relief = 0)
+	
+	tab_fy()
+	tabs_fx()
+	hi_tool.configure(background = 'yellow')
+	present_bg()
+
+def cerculean():
+	style.theme_use('cerculean')
+	style.configure('button.TButton', borderwidth=0, background = 'white', foreground = '#4bb1ea')
+	style.configure('menubutton.TMenubutton', background = 'white', borderwidth = 0, foreground = '#4bb1ea')
+	style.configure('Treeview', rowheight = 30,
+ 	 font = ('roboto', 11), border = 0, relief = 0)
+	
+	tab_fy()
+	tabs_fx()
+	hi_tool.configure(background = 'yellow')
+	present_bg()
+
+# def siplex():
+# 	style.theme_use('siplex')
+# 	style.configure('button.TButton', borderwidth=0, background = '#284d6b', foreground = 'white')
+# 	style.configure('menubutton.TMenubutton', background = '#284d6b', borderwidth = 0, foreground = 'white')
+# 	style.configure('Treeview', rowheight = 30,
+#  	 font = ('roboto', 11), border = 0, relief = 0)
+	
+# 	tab_fy()
+# 	tabs_fx()
+# 	hi_tool.configure(background = 'yellow')
+
+def yeti():
+	style.theme_use('yeti')
+	style.configure('button.TButton', borderwidth=0, background = 'white', foreground = 'black')
+	style.configure('menubutton.TMenubutton', background = 'white', borderwidth = 0, foreground = 'black')
+	style.configure('Treeview', rowheight = 30,
+ 	 font = ('roboto', 11), border = 0, relief = 0)
+	
+	tab_fy()
+	tabs_fx()
+	hi_tool.configure(background = 'yellow')
+	present_bg()
+
+# def united():
+# 	style.theme_use('united')
+# 	style.configure('button.TButton', borderwidth=0, background = '#284d6b', foreground = 'white')
+# 	style.configure('menubutton.TMenubutton', background = '#284d6b', borderwidth = 0, foreground = 'white')
+# 	style.configure('Treeview', rowheight = 30,
+#  	 font = ('roboto', 11), border = 0, relief = 0)
+	
+# 	tab_fy()
+# 	tabs_fx()
+# 	hi_tool.configure(background = 'yellow')
+
+# def sandston():
+# 	style.theme_use('sandstone')
+# 	style.configure('button.TButton', borderwidth=0, background = '#284d6b', foreground = 'white')
+# 	style.configure('menubutton.TMenubutton', background = '#284d6b', borderwidth = 0, foreground = 'white')
+# 	style.configure('Treeview', rowheight = 30,
+#  	 font = ('roboto', 11), border = 0, relief = 0)
+	
+# 	tab_fy()
+# 	tabs_fx()
+# 	hi_tool.configure(background = 'yellow')
+
+# def pulse():
+# 	style.theme_use('pulse')
+# 	style.configure('button.TButton', borderwidth=0, background = '#284d6b', foreground = 'white')
+# 	style.configure('menubutton.TMenubutton', background = '#284d6b', borderwidth = 0, foreground = 'white')
+# 	style.configure('Treeview', rowheight = 30,
+#  	 font = ('roboto', 11), border = 0, relief = 0)
+	
+# 	tab_fy()
+# 	tabs_fx()
+# 	hi_tool.configure(background = 'yellow')
+
+# def minty():
+# 	style.theme_use('minty')
+# 	style.configure('button.TButton', borderwidth=0, background = '#284d6b', foreground = 'white')
+# 	style.configure('menubutton.TMenubutton', background = '#284d6b', borderwidth = 0, foreground = 'white')
+# 	style.configure('Treeview', rowheight = 30,
+#  	 font = ('roboto', 11), border = 0, relief = 0)
+	
+# 	tab_fy()
+# 	tabs_fx()
+# 	hi_tool.configure(background = 'yellow')
+
+# def lumen():
+# 	style.theme_use('lumen')
+# 	style.configure('button.TButton', borderwidth=0, background = '#284d6b', foreground = 'white')
+# 	style.configure('menubutton.TMenubutton', background = '#284d6b', borderwidth = 0, foreground = 'white')
+# 	style.configure('Treeview', rowheight = 30,
+#  	 font = ('roboto', 11), border = 0, relief = 0)
+	
+# 	tab_fy()
+# 	tabs_fx()
+# 	hi_tool.configure(background = 'yellow')
+
+# def journal():
+# 	style.theme_use('journal')
+# 	style.configure('button.TButton', borderwidth=0, background = '#284d6b', foreground = 'white')
+# 	style.configure('menubutton.TMenubutton', background = '#284d6b', borderwidth = 0, foreground = 'white')
+# 	style.configure('Treeview', rowheight = 30,
+#  	 font = ('roboto', 11), border = 0, relief = 0)
+	
+# 	tab_fy()
+# 	tabs_fx()
+# 	hi_tool.configure(background = 'yellow')
+
+def solar():
+	style.theme_use('solar')
+	style.configure('button.TButton', borderwidth=0, background = '#002b36', foreground = 'white')
+	style.configure('menubutton.TMenubutton', background = '#002b36', borderwidth = 0, foreground = 'white')
+	style.configure('Treeview', rowheight = 30,
+ 	 font = ('roboto', 11), border = 0, relief = 0)
+	
+	tab_fy()
+	tabs_fx()
+	hi_tool.configure(background = 'yellow')
+	present_bg()
+
+def cyborg():
+	style.theme_use('cyborg')
+	style.configure('button.TButton', borderwidth=0, background = '#060606', foreground = 'white')
+	style.configure('menubutton.TMenubutton', background = '#060606', borderwidth = 0, foreground = 'white')
+	style.configure('Treeview', rowheight = 30,
+ 	 font = ('roboto', 11), border = 0, relief = 0)
+	
+	tab_fy()
+	tabs_fx()
+	hi_tool.configure(background = 'yellow')
+	History.theme = 'cyborg'
+	present_bg()
+
+def vapor():
+	style.theme_use('vapor')
+	style.configure('button.TButton', borderwidth=0, background = '#190831', foreground = '#26d8e2')
+	style.configure('menubutton.TMenubutton', background = '#190831', borderwidth = 0, foreground = '#26d8e2')
+	style.configure('Treeview', rowheight = 30,
+ 	 font = ('roboto', 11), border = 0, relief = 0)
+	
+	tab_fy()
+	tabs_fx()
+	hi_tool.configure(background = 'yellow')
+	present_bg()
 
 #the program's images or icons	
 
@@ -225,7 +436,7 @@ forward_img = PhotoImage(file = 'redo.png')
 # pdf_img = PhotoImage(file = 'b_pdfdoc.png')
 view_img = PhotoImage(file = 's_views.png')
 bk_img = PhotoImage(file = 'b_bookmark.png')
-# db_img = PhotoImage(file = 's_db.png')
+minus = PhotoImage(file = 'minus.png')
 share = PhotoImage(file = 'reload.png')
 right_side = PhotoImage(file = 'b_nextpage.png')
 left_side = PhotoImage(file = 'b_prevpage.png')
@@ -235,30 +446,27 @@ eb = PhotoImage(file = 'eb.png')
 addd = PhotoImage(file = 'add.png')
 text_b = PhotoImage(file = 'text.png')
 view2 = PhotoImage(file = 'b_views.png')
+slide = PhotoImage(file = 'slide.png')
 
 #connected database path.
-def db_path():
+# def db_path():
 
-	try:
-		# Get the AppData directory path
-		appdata_path = Path(os.getenv('APPDATA'))
+# 	try:
+# 		# Get the AppData directory path
+# 		appdata_path = Path(os.getenv('APPDATA'))
 
-		# Create a directory for your application
-		app_dir = appdata_path / 'EasyBible'
-		app_dir.mkdir(parents=True, exist_ok=True)
+# 		# Create a directory for your application
+# 		app_dir = appdata_path / 'EasyBible'
+# 		app_dir.mkdir(parents=True, exist_ok=True)
 
-		try:
-			shutil.copy2('hilights.db', app_dir)
-			file_path = app_dir / 'hilights.db'
-		except Exception as e:
-			return app_dir / 'hilights.db'
-		return app_dir/'hilights.db'
-	except Exception as e:
-		app_dir = appdirs.user_data_dir('EasyBible', 'HCC')
-		path = Path(app_dir)
-		shutil.copy2(db, path)
-		file_path = path / db
-		return file_path
+# 		try:
+# 			shutil.copy2('hilights.db', app_dir)
+# 			file_path = app_dir / 'hilights.db'
+# 		except Exception as e:
+# 			return app_dir / 'hilights.db'
+# 		return app_dir/'hilights.db'
+# 	except Exception as e:
+# 		pass
 
 img_list = [back_img, forward_img]
 
@@ -330,6 +538,10 @@ comm = ttk.Menubutton(icons_tool, text = 'Commentaries', compound = 'top',
   bootstyle = 'primary', style = 'menubutton.TMenubutton')
 comm.pack(side = 'left', padx = 1)
 ToolTip(comm, text = "Books and commentaries")
+
+# text_to_audio = ttk.Button(icons_tool, text = 'Converter', command = lambda: texttouadio.converter(None))
+# text_to_audio.pack(side = 'left')
+# ToolTip(text_to_audio, text = 'Convert text to audio')
 
 comm_menu = Menu()
 # comm_menu.add_command(label = 'From CSV file notes')
@@ -490,14 +702,14 @@ tabs = tk.Frame(highlit_page)
 tabs.pack(side = 'top', fill = 'x')
 
 def all_hilights():
-	conn = sqlite3.connect(db_path())
+	conn = sqlite3.connect('hilights.db')
 	c = conn.cursor()
 	sql = "SELECT* from hilights order by ID DESC"
 	result = c.execute(sql).fetchall()
 	return result
 
 def sorted_hilights(color):
-	conn = sqlite3.connect(db_path())
+	conn = sqlite3.connect('hilights.db')
 	c = conn.cursor()
 	sql = "SELECT* from hilights where COLOR = ? order by ID DESC"
 	result = c.execute(sql, (color,)).fetchall()
@@ -512,7 +724,7 @@ def populate_hilight(source):
 	for i in source:
 		ref = i[2].split(']')
 		#print(ref[1])
-		Hilights.verse(frame, i[1], f"{ref[0]}]", ref[1], i[0])
+		Hilights.verse(frame, i[1], f"{ref[0]}]", ref[1], i[0], minus)
 
 # this sorts the highlights according to color
 def filter(obj):
@@ -540,7 +752,7 @@ np.pack(side = 'left', fill = 'both', expand = 1)
 # n_bg.configure(background = 'whitesmoke')
 
 def my_notes():
-	conn = sqlite3.connect(db_path())
+	conn = sqlite3.connect('hilights.db')
 	c = conn.cursor()
 	sql = "SELECT REF,TITLE from notes order by ID DESC"
 	result = c.execute(sql).fetchall()
@@ -606,6 +818,7 @@ def change_books(e):
 	ch.configure(value=[x for x in range(1, chs+1)])
 	vs.set('1')
 	ch.set('1')
+	save_history()
 
 def next_book():
 	try:
@@ -651,7 +864,7 @@ ToolTip(prev_tool1, text = 'Previous book\n Key: Down')
 bk = ttk.Combobox(scripture_tool, values = bks, height = 30,
  state ='readonly', width = 30)
 bk.pack(side=tk.LEFT, padx = 5)
-bk.set('Genesis')
+bk.set(History.ref_bk)
 ToolTip(bk, text = 'Select a book')
 #bk.current(0)
 #bk.configure(style = 'TCombobox')
@@ -672,9 +885,17 @@ def search_bible(e):
 	for verse in v:
 		
 		scripture_book.insert('end', verse+'\n\n')
-vlist = []
+		try:
+			pos = scripture_book.search(txt, '1.0', nocase = 1, exact = False)
+			end = f"{pos} + {len(txt)}c"
+			scripture_book.tag_add('color', pos, end)
+			scripture_book.tag_configure('color', foreground = 'orange') 
+		except Exception as e:
+			pass
+
+verse_list = []
 for x in range(1, chs +1):
-	vlist.append(x)
+	verse_list.append(x)
 
 nxt_tool1 = ttk.Button(scripture_tool, image = right_side, command = next_book, style = 'button.TButton')
 nxt_tool1.pack(side = LEFT)
@@ -683,7 +904,7 @@ ToolTip(nxt_tool1, text = 'Next book\n Key: Up')
 ch = ttk.Combobox(scripture_tool, values=[str(x) for x in range(1, chs+1)],
  height =30, state = 'readonly', width =5)
 ch.pack(side=tk.LEFT, padx = 5)
-ch.set('1')
+ch.set(History.ref_ch)
 ToolTip(ch, text = 'Selected book chapter')
 #ch.current(0)
 #ch.configure(style = 'TCombobox')
@@ -702,17 +923,25 @@ def get_verse_num(e):
 	scripture_book.delete('1.0', tk.END)
 	for txt in text:
 		scripture_book.insert(tk.END, txt +'\n\n')
+	save_history()
 ch.bind('<<ComboboxSelected>>', get_verse_num)
 
 def get_verse(e):
-	version = Version.verion
-	b = bk.get()
-	c = ch.get()
-	v = vs.get()
-	ref = f"{b} {c}:{v}"
-	vse = get_bible(version, f"%{ref}%")
-	scripture_book.delete('1.0', tk.END)
-	scripture_book.insert(tk.END, vse)
+	try:
+		version = Version.verion
+		b = bk.get()
+		chapter = ch.get()
+		v = vs.get()
+		ref = f"{b} {chapter}:{v}"
+		vse = get_bible(version, f"%{ref}%")
+		pos = scripture_book.search(vse, '1.0')
+		# scripture_book.delete('1.0', tk.END)
+		scripture_book.see(pos)
+		end = f"{pos} + {len(vse)}chapter"
+		scripture_book.tag_add('sele', pos, end)
+		scripture_book.tag_configure('sele', background='#d9e3f1', foreground='black')
+	except Exception as e:
+		pass
 vs = ttk.Combobox(scripture_tool, value=[x for x in range(1, 2)],
  height =30, state = 'readonly', width = 5)
 vs.pack(side=LEFT)
@@ -738,7 +967,7 @@ s_b = ttk.Frame(scripture)
 scripture_pane.add(s_b)
 
 scripture_book = tk.Text(s_b, font =('Comic Sans', 14),
- wrap = WORD, width=13, heigh=15,padx =20,
+ wrap = WORD, width=13, height = 15, padx =20,
  border = 0, relief = 'sunken')
 scripture_book.pack(side = tk.LEFT, fill = tk.BOTH, expand = 1)
 
@@ -763,9 +992,9 @@ ToolTip(copy_tool, text = 'Copy selected text.\nKey: Ctrl + C')
 def coll():
 	get_current_line()
 
-addc_tool = ttk.Button(scrip_book_tool, image = text_b, command = coll, style = 'button.TButton')
-addc_tool.pack(side = TOP)
-ToolTip(addc_tool, text = 'Add the verse where the cursor is to collection.\nKey: Ctrl + M')
+add_collection_tool = ttk.Button(scrip_book_tool, image = text_b, command = coll, style ='button.TButton')
+add_collection_tool.pack(side = TOP)
+ToolTip(add_collection_tool, text ='Add the verse where the cursor is to collection.\nKey: Ctrl + M')
 
 def wrt_note():
 	write_note()
@@ -784,16 +1013,44 @@ ToolTip(read_tool, text = 'Read note of the verse where the cursor is.\nKey: Ctr
 # copy_tool1 = ttk.Button(scrip_book_tool, image = copy2)
 # copy_tool1.pack(side = TOP)
 
-def hili(e):
-	hilight_box()
+def dictionary_look(e):
+	try:
+		word = scripture_book.selection_get()
+		meaning = dictionary.meaning(word)
+		read.configure(state = 'normal', font = ('roboto', 12))
+		read.delete('1.0', END)
+		for line in meaning:
+			wrd = line[0]
+			pos = line[1]
+			definition = line[2]
+			read.insert('end', f'{wrd}:', ('font3'))
+			read.insert('end', f'{pos}\n', ('font4'))
+			read.insert('end', f'{definition}\n\n')
+			read.tag_configure('font3', font = ('Calibre Light', 12, 'bold'))
+			read.tag_configure('font4', font = ('roboto', 12, 'normal', 'italic'), foreground = 'orange')
+		read.configure(state = 'disabled')
+	except Exception as e:
+		pass
+
+dict_tool = ttk.Button(scrip_book_tool, image = view_img, command = lambda: dictionary_look(None), style = 'button.TButton')
+dict_tool.pack(side = TOP)
+ToolTip(dict_tool, text = 'Search the meaning of selected text from dictionary.\nKey: Ctrl + F')
+root.bind('<Control-f>',dictionary_look)
+
+def coloring(e):
+	hilighted_box()
 
 hi_tool = tk.Label(scrip_book_tool, text = '', padx = 18,
  background = 'yellow', border = 1, relief = 'solid')
 hi_tool.pack(side = TOP, pady = 1)
-hi_tool.bind('<Button-1>', hili)
+hi_tool.bind('<Button-1>', coloring)
 hi_tool.configure(background = 'yellow')
-ToolTip(hi_tool, text = 'Hilight a verse\nKey: Ctrl + H')
+ToolTip(hi_tool, text = 'Highlight a verse\nKey: Ctrl + H')
 
+def load_history():
+	scripture_book.delete('1.0',END)
+	get_verse_num(None)
+load_history()
 #next chapter
 def next_ch():
 	try:
@@ -816,7 +1073,7 @@ def prev_ch():
 	try:
 		chapters = my_bible.count_chapters(bk.get())
 		x = int(ch.get())
-		if x >0 and x <= chapters+1:
+		if 0 < x <= chapters+1:
 			x -= 1
 			if x == 0:
 				x = 1
@@ -836,7 +1093,7 @@ prev_tool = ttk.Button(scrip_book_tool, image = left_side, command = prev_ch, st
 prev_tool.pack(side = BOTTOM, anchor = S)
 ToolTip(prev_tool, text = 'Previous chapter\nKey: Left')
 
-# change font size of the scripyure_book
+# change font size of the scripture_book
 def change_font(Event = None):
 	try:
 		f = font_size.get()
@@ -848,11 +1105,23 @@ def change_font(Event = None):
 font_size = ttk.Scale(scrip_book_tool, orient = VERTICAL, from_ = 50, to = 10,
  value = 10, command = change_font, cursor = 'hand2')
 font_size.pack(side = BOTTOM, anchor = S)
-ToolTip(font_size, text = 'Bible font size:\nDrag the hadle up to increase the font size\nand down to decrease.')
+ToolTip(font_size, text = 'Bible font size:\nDrag the handle up to increase the font size\nand down to decrease.\nKey: + to add font\nKey: - to reduce font')
 font_size.set(14)
-#font lable
+#font label
 font_la = ttk.Label(scrip_book_tool, text = '14')
 font_la.pack(side = BOTTOM, anchor = S)
+
+def add_font(e):
+	f = font_size.get()
+	font_size.set(int(f) +1)
+	change_font()
+
+def reduce_font(e):
+	f = font_size.get()
+	font_size.set(int(f) -1)
+	change_font()
+root.bind('-', reduce_font)
+root.bind('+', add_font)
 
 #syy = tk.Scrollbar(scripture_book, orient ='vertical',
  #command = scripture_book.yview, cursor = 'arrow')
@@ -874,30 +1143,152 @@ ToolTip(copy, text = 'Copy notes')
 # when selecting a text from the read text area
 def sel_data(e):
 	search_sel.configure(state = 'active')
-	# the hilighted text2(source) function searches the bible for the text selected from source.
-	# it creates a toplevel window with the results.
+	# the highlighted text2(source) function searches the bible for the text selected from source.
+	# it creates a top level window with the results.
 	# the function is written below. continue reading you will get it
 	search_sel.bind('<Button-1>', lambda source: hilighted_text2(read))
 	search_sel.configure(state = 'active')
+	present_verse.configure(state = 'active', command=lambda: present_highlighted_text(None))
+	present_verse.bind('<Button-1>', present_highlighted_text)
+	# live_tools()
 
 search_sel = ttk.Button(note_tool, text = 'Find', compound = 'top',
 	image = filter_img, state = 'disabled', style = 'button.TButton')
 search_sel.pack(side = 'left')
 ToolTip(search_sel, text = 'Search the bible for selected text from note')
 
+dic = ttk.Button(note_tool, text = 'Dictionary', compound = 'top',
+	image = view_img, style = 'button.TButton', command = lambda: dictionary_look(None))
+dic.pack(side = 'left')
+ToolTip(dic, text = 'Find the meaning of text selected!\nKey: Ctrl + F')
+
+def search_dictionary(e):
+	text = search_box.get()
+	if text == '':
+		word = 'a'
+	else:
+		word = text
+	try:
+		meaning = dictionary.meaning(word)
+		read.configure(state = 'normal', font = ('roboto', 12))
+		read.delete('1.0', END)
+		for line in meaning:
+			wrd = line[0]
+			pos = line[1]
+			definition = line[2]
+			read.insert('end', f'{wrd}:', ('font3'))
+			read.insert('end', f'{pos}\n', ('font4'))
+			read.insert('end', f'{definition}\n\n')
+			read.tag_configure('font3', font = ('Calibre Light', 12, 'bold'))
+			read.tag_configure('font4', font = ('roboto', 12, 'normal', 'italic'), foreground = 'orange')
+		read.configure(state = 'disabled')
+	except Exception as e:
+		pass
+
+search_box = ttk.Entry(note_tool)
+search_box.pack(side = LEFT)
+search_box.bind('<KeyRelease>', search_dictionary)
+to_projector()
+
+def present_highlighted_text(e):
+	try:
+		text = read.selection_get()
+
+		diction = text.split('\n')
+		ref, body = diction[0], diction[1]
+		slide_show(body, ref)
+
+	except Exception as e:
+		text = read.selection_get()
+		slide_show(text, '')
+
+def presentation(e):
+	try:
+		v = current_line().split(']')
+		ref, verse = v[0], v[1]
+		slide_show(verse, ref.strip('['))
+
+	except Exception as e:
+		pass
+
+
+present_verse = ttk.Button(note_tool, text = 'Present', compound = 'left',
+	image = slide, style = 'button.TButton', command = lambda: presentation(None))
+present_verse.pack(side = 'left')
+
+ToolTip(present_verse, text = 'Project the selected verse to secondary screen.\nKey: Ctrl + J')
+root.bind('<Control-j>', presentation)
+
+mode = IntVar()
+def change_mode():
+	var = mode.get()
+	if var == 1:
+		present_verse.configure(state='disabled')
+		return True
+
+	else:
+		present_verse.configure(state='active')
+		return False
+
+def on_presentation_mode(e):
+	if change_mode() == True:
+		presentation(None)
+	else:
+		pass
+scripture_book.bind('<Button-1>', on_presentation_mode)
+
+present_mode = ttk.Checkbutton(note_tool, text='Presentation mode', variable= mode, command= change_mode)
+present_mode.pack(side = LEFT, padx = 10)
+ToolTip(present_mode, text='Toggle presentation mode. Once set on,\n Clicking on a verse will present it to the secondary screen')
+
+def clear_presentation():
+	slide_show('','')
+
+clear_button = ttk.Button(note_tool, text = 'Clear presentation', command= clear_presentation, style = 'button.TButton',
+						  image=drop_img, compound='left')
+clear_button.pack(side = RIGHT, padx = 10)
+ToolTip(clear_button, 'Clear presentation text')
+
+def live_tools(e):
+	def remove(e):
+		bar.place_forget()
+
+	x_pos, y_pos = root.winfo_pointerxy()
+	bar = tk.Frame(root, background='whitesmoke', border=1, relief='solid')
+	bar.place(x = x_pos, y = y_pos)
+	bar.configure(background='whitesmoke', border=1, relief='solid')
+
+	cc = ttk.Button(bar, text = 'Copy', command= ccp, style='button.TButton', image= copy_b, compound= TOP)
+	cc.pack(side = LEFT)
+	cc.bind('<Button-1>', copy_text)
+
+	se = ttk.Button(bar, text='Search', command=lambda source: hilighted_text2(read), style='button.TButton', image=filter_img, compound=TOP)
+	se.pack(side=LEFT)
+	se.bind('<Button-1>', lambda source: hilighted_text2(read))
+
+	dc = ttk.Button(bar, text='Dictionary', command=lambda: dictionary_look(None) , style='button.TButton', image=view_img, compound=TOP)
+	dc.pack(side=LEFT)
+	dc.bind('<Button-1>', dictionary_look)
+
+	pr = ttk.Button(bar, text='Present', command=lambda: present_highlighted_text(None), style='button.TButton', image=slide, compound=TOP)
+	pr.pack(side=LEFT)
+	pr.bind('<Button-1>',present_highlighted_text)
+
+	root.bind('<Button-1>', remove)
+
 # the text area to read notes
-read = tk.Text(notes, state = 'disabled', border =0, relief = 'sunken')
+read = tk.Text(notes, state = 'disabled', border =0, relief = 'sunken', wrap = WORD)
 read.pack(side = tk.TOP, fill = tk.BOTH, expand = 1)
 read.bind('<<Selection>>', sel_data)
-
+read.bind('<Button-1>', live_tools)
 # populate the scripture book with scriptures.
 # the get_bible_ch function generates a bible chapters given the bible version and book.
 # if an empty string is given instead of a book, it generates the whole bible.
 # the function is imported from the book module
-cur = bk.get()
-bible_text = get_bible_ch(Version.verion, f"% %")
-for verses in bible_text:
-	scripture_book.insert('end', verses +'\n\n')
+# cur = bk.get()
+# bible_text = get_bible_ch(Version.version, f"% %")
+# for verses in bible_text:
+# 	scripture_book.insert('end', verses +'\n\n')
 	#print(verses)
 #scripture_book.configure(state = 'disabled')
 def disable_backspace(e):
@@ -919,18 +1310,24 @@ def get_current_line(event = None):
 #shortcut for collections
 root.bind('<Control-m>', get_current_line)
 #add context menu
-def show_contect_menu(event):
+def show_context_menu(event):
 	context_menu.post(event.x + 350, event.y)
 
 def copy_text(event=None):
-	#selected_text=editor.selection_get()
-	root.clipboard_clear()
-	root.clipboard_append(current_line())
+	try:
+		selected_text = scripture_book.selection_get()
+		root.clipboard_clear()
+		root.clipboard_append(selected_text)
+	except Exception as e:
+		# selected_text = scripture_book.selection_get()
+		root.clipboard_clear()
+		root.clipboard_append(current_line())
+	
 #shortcut for copying verse
 root.bind('<Control-c>', copy_text)
 
 #highlits colors. Highlighting verses
-def hilight_box(event = None):
+def hilighted_box(event = None):
 	x_pos, y_pos = root.winfo_pointerxy()
 	box = tk.Frame(root, background = 'whitesmoke', border = 1, relief = 'solid')
 	box.place(x = x_pos-390, y = y_pos-50)
@@ -954,18 +1351,19 @@ def hilight_box(event = None):
 	def selected_color(obj):
 		try:
 			if current_line():
-				color = obj.cget('background')
+				clr = obj.cget('background')
 				pos = scripture_book.search(current_line(), '1.0')
 				end = f"{pos} + {len(current_line())}c"
-				scripture_book.tag_add('color', pos, end)
-				scripture_book.tag_configure('color', background = color)
+				scripture_book.tag_add(f'clr{pos}', pos, end)
+				scripture_book.tag_configure(f'clr{pos}', background = clr)
+				tag_pos = f'clr{pos}|{pos}|{end}|{clr}'
 				#print(pos,end)
 				#SAVE HILIGHTS TO DATABASE
-				conn =  sqlite3.connect(db_path())
+				conn =  sqlite3.connect('hilights.db')
 				c = conn.cursor()
 
-				sql = 'INSERT INTO hilights (COLOR, REF) values (?, ?)'
-				c.execute(sql, (color, current_line()))
+				sql = 'INSERT INTO hilights (COLOR, REF,TAG) values (?, ?, ?)'
+				c.execute(sql, (clr, current_line(), tag_pos))
 				conn.commit()
 
 				populate_hilight(all_hilights())
@@ -1008,11 +1406,14 @@ def write_note(event = None):
 		note = text.get('1.0', 'end')
 		tt = inp.get()
 		ref = f"{title}]"
-		conn = sqlite3.connect(db_path())
+		conn = sqlite3.connect('hilights.db')
 		c = conn.cursor()
-		sql = "INSERT INTO notes (REF, TITLE, NOTES) values (?, ?, ?)"
-		c.execute(sql, (ref, tt, note,))
-		conn.commit()
+		try:
+			sql = "INSERT INTO notes (REF, TITLE, NOTES) values (?, ?, ?)"
+			c.execute(sql, (ref, tt, note,))
+			conn.commit()
+		except Exception as e:
+			showerror('','permission error')
 		frame.destroy()
 		for item in np.winfo_children():
 			item.destroy()
@@ -1055,7 +1456,7 @@ root.bind('<Control-w>', write_note)
 def view_notes(event = None):
 	title = current_line().split(']')[0]
 	ref = f'{title}]'
-	conn = sqlite3.connect(db_path())
+	conn = sqlite3.connect('hilights.db')
 	c = conn.cursor()
 	sql = "SELECT TITLE, NOTES from notes where REF = ?"
 	result = c.execute(sql, (ref,)).fetchall()
@@ -1090,6 +1491,8 @@ context_menu.add_command(label = 'Previous chapter', accelerator = 'Left', comma
 context_menu.add_separator()
 context_menu.add_command(label= 'Search selected text', command = lambda: hilighted_text(scripture_book))
 context_menu.add_command(label= 'Copy verse to clipbord', accelerator = 'Ctrl + C', command=copy_text)
+context_menu.add_command(label= 'Dictionary meaning of selected word', accelerator = 'Ctrl + F', 
+	command = lambda: dictionary_look(None))
 context_menu.add_separator()
 #context_menu.add_command(label= 'Add verse to bookmark', accelerator = 'Ctrl + D')
 context_menu.add_command(label= 'Add to collections', accelerator = 'Ctrl + M', command = get_current_line)
@@ -1098,12 +1501,15 @@ context_menu.add_command(label= 'Write notes', accelerator = 'Ctrl + W', command
 context_menu.add_command(label= 'Read notes', accelerator = 'Ctrl + R', command = view_notes)
 context_menu.add_command(label= 'Copy notes', accelerator = 'Ctrl + Shift + C', command = copy_note)
 context_menu.add_separator()
-context_menu.add_command(label= 'Highlight verse', accelerator = 'Ctrl + H', command = hilight_box)
+context_menu.add_command(label= 'Highlight verse', accelerator = 'Ctrl + H', command = hilighted_box)
+context_menu.add_separator()
+context_menu.add_command(label='Present', accelerator='Ctrl + J', command=lambda: presentation(None))
+context_menu.add_checkbutton(label='Presentation mode', variable= mode, command= change_mode)
 
-root.bind('<Control-h>', hilight_box)
+root.bind('<Control-h>', hilighted_box)
 copy.bind('<Button-1>', copy_note)
 root.bind('<Control-Shift-c>', copy_note)
-scripture_book.bind('<Button-3>', show_contect_menu)
+scripture_book.bind('<Button-3>', show_context_menu)
 #get highlighted text
 # unlike hilighted_text2(source), hilighted_text(source) gets the result of any text selected.
 
@@ -1171,15 +1577,13 @@ def hilighted_text2(source):
 def initialize_hilights():
 	try:
 		for hilight in all_hilights():
-			pos = scripture_book.search(hilight[2], '1.0')
-			end = f"{pos} + {len(hilight[2])}c"
-			#print(f"{hilight[2]} - {pos}")
-			scripture_book.tag_add(hilight[1], pos, end)
-			scripture_book.tag_configure(hilight[1], background = color)
+			tag = hilight[3].split('|')
+			scripture_book.tag_add(tag[0], tag[1], tag[2])
+			scripture_book.tag_configure(tag[0], background = tag[3])
 
 	except Exception as e:
-		pass
-initialize_hilights()
+		raise e
+# initialize_hilights()
 
 # the ref or reference section are things to do with collections
 # the collect.py is the source code that works with most functions here
@@ -1570,6 +1974,8 @@ daily_menu.add_command(label = 'From random verses', command = lambda: PlanB.pla
 daily.configure(menu = daily_menu)
 ToolTip(daily, text = 'Daily Psalm or Random bible verses')
 
+def q():
+	quit(None)
 menu_bar = tk.Menu(root) 
 filemenu = Menu(menu_bar)
 filemenu.add_command(label = 'New collection', accelerator = 'Ctrl + N', command = new_collection)
@@ -1580,12 +1986,12 @@ filemenu.add_command(label = 'Save collection', accelerator = 'Ctrl + S', comman
 # filemenu.add_command(label = 'Export collection to MS Word file')
 #filemenu.add_command(label = 'Share collection to community page', compound = 'left', image = share)
 filemenu.add_separator()
-filemenu.add_command(label = 'Export notes to plain text', command = Ttext)
+# filemenu.add_command(label = 'Export notes to plain text', command = Ttext)
 #filemenu.add_command(label = 'Export notes to word')
 # filemenu.add_command(label = 'Export notes to CSV (Excel)', command = Cvs)
-#filemenu.add_command(label = 'Export notes to SQL', compound = 'left', image = db_img)
+# filemenu.add_command(label = 'Text to audio converter', accelerator = 'Ctrl + K', command = lambda: texttouadio.converter(None))
 filemenu.add_separator()
-filemenu.add_command(label = 'Quit', accelerator = 'Ctrl + Q', command = root.destroy, compound = 'left', image = drop_img)
+filemenu.add_command(label = 'Quit', accelerator = 'Ctrl + Q', command = q, compound = 'left', image = drop_img)
 menu_bar.add_cascade(label="File", menu=filemenu)
 
 var_notes = tk.IntVar()
@@ -1622,12 +2028,17 @@ toolmenu.add_command(label = 'Previous chapter', accelerator = 'Left', command =
 toolmenu.add_separator()
 toolmenu.add_command(label = 'Copy selected text', accelerator = 'Ctrl + C', command = ccp)
 toolmenu.add_command(label = 'Search selected text', command =lambda: hilighted_text(scripture_book))
+toolmenu.add_command(label = 'Dictionary meaning of selected word', command =lambda: dictionary_look(None),
+	accelerator = 'Ctrl + F')
 toolmenu.add_separator()
 toolmenu.add_command(label = 'Add verse to collection', accelerator = 'Ctrl M', command = get_current_line)
 toolmenu.add_separator()
 toolmenu.add_command(label = 'Write notes', accelerator = 'Ctrl + W', command = write_note)
 toolmenu.add_command(label = 'Read notes', accelerator = 'Ctrl + R', command = view_notes)
 toolmenu.add_command(label= 'Copy notes', accelerator = 'Ctrl + Shift + C', command = copy_note)
+toolmenu.add_separator()
+toolmenu.add_command(label='Present', accelerator='Ctrl + J', command=lambda: presentation(None))
+toolmenu.add_checkbutton(label='Presentation mode', variable= mode, command= change_mode)
 # toolmenu.add_command(label = 'Highlights', command = hilight_box)
 menu_bar.add_cascade(label = 'Tools', menu = toolmenu)
 
@@ -1694,12 +2105,38 @@ def improve():
 	pass
 
 root.bind('<F1>', open_documentation)
+# th = ['morph', 'litera', 'cerculean','siplex','yeti','united','sandston','pulse','minty','lumen','journal',
+# 'solar','cyborg','vapor',]
+root.bind('<F10>', lambda e: cerculean())
+root.bind('<F11>', lambda e: cosmo())
+root.bind('<F12>', lambda e: yeti())
+root.bind('<F2>', lambda e: flatly())
+root.bind('<F3>', lambda e: darkly())
+root.bind('<F4>', lambda e: superhero())
+root.bind('<F6>', lambda e: morph())
+root.bind('<F7>', lambda e: solar())
+root.bind('<F8>', lambda e: cyborg())
+root.bind('<F9>', lambda e: vapor())
 
 thememenu = Menu()
-thememenu.add_command(label = 'Cosmo (Light)', command = cosmo)
-thememenu.add_command(label = 'Flatly (Light)', command = flatly)
-thememenu.add_command(label = 'Darkly (Dark)', command = darkly)
-thememenu.add_command(label = 'Superhero', command = superhero)
+thememenu.add_command(label = 'Cosmo (Light)', command = cosmo, accelerator = 'F11')
+thememenu.add_command(label = 'Flatly (Light)', command = flatly, accelerator = 'F2')
+thememenu.add_command(label = 'Darkly (Dark)', command = darkly, accelerator = 'F3')
+thememenu.add_command(label = 'Superhero', command = superhero, accelerator = 'F4')
+thememenu.add_command(label = 'Morph', command = morph, accelerator = 'F6')
+# thememenu.add_command(label = 'Litera', command = litera)
+thememenu.add_command(label = 'Cerculean', command = cerculean, accelerator = 'F10')
+# thememenu.add_command(label = 'Siplex', command = siplex)
+thememenu.add_command(label = 'Yeti', command = yeti, accelerator = 'F12')
+# thememenu.add_command(label = 'United', command = united)
+# thememenu.add_command(label = 'Sandstone', command = sandston)
+# thememenu.add_command(label = 'Pulse', command = pulse)
+# thememenu.add_command(label = 'Minty', command = minty)
+# thememenu.add_command(label = 'Lumen', command = lumen)
+# thememenu.add_command(label = 'Journal', command = journal)
+thememenu.add_command(label = 'Solar', command = solar, accelerator = 'F7')
+thememenu.add_command(label = 'Cyborg', command = cyborg, accelerator = 'F8')
+thememenu.add_command(label = 'Vapor', command = vapor, accelerator = 'F9')
 #thememenu.add_separator()
 #thememenu.add_command(label = 'Plain window (Vista)', command = run_main)
 menu_bar.add_cascade(label = 'Theme', menu = thememenu)
@@ -1740,7 +2177,18 @@ Collection.file_opening(root, state, reference_book)
 root.state('zoomed')
 root.update_idletasks()
 def quit(e):
+	save_history()
+	# fr = tk.Frame(root)
+	# # fr.place(x = sw/2.6, y = sh/2.8)
+	# gb = tk.Label(fr, text = 'Good bye!', font = ('roboto', 24, 'bold'))
+	# gb.pack(side = TOP, pady = 50, padx = 50)
+	# fr.configure(background = 'whitesmoke')
+	# gb.configure(background = 'whitesmoke')
+	# fr.place(x = sw/2.6, y = sh/2.8)
+	
+	# time.sleep(3)
 	root.destroy()
+	
 root.bind('<Control-q>',quit)
 root.config(menu = menu_bar)
 

@@ -14,7 +14,7 @@ class Hilights():
 		super(Hilights, self).__init__()
 		self.arg = arg
 
-	def verse(parent, color, ref, scripture, id_ref):
+	def verse(parent, color, ref, scripture, id_ref, minus):
 		def delete_hilight():
 			par = top.winfo_children()
 			idd = par[1].cget('text')
@@ -52,7 +52,7 @@ class Hilights():
 		id_reff.pack(side = 'left')
 		id_reff.configure(background = color, foreground = color)
 
-		rem = tk.Button(top, text = 'X',background = color, border = 1, relief = 'solid', command = delete_hilight)
+		rem = tk.Button(top, image = minus,background = color, border = 1, relief = 'solid', command = delete_hilight)
 		rem.pack(side = 'right', padx = 10)
 		rem.configure(background = color, cursor = 'hand2', foreground = 'red')
 		ToolTip(rem, text = 'Delete hilight')
@@ -120,6 +120,7 @@ class Notes():
 				frame.destroy()
 
 			def on_press(event):
+				global  start_x, start_y
 				start_x = event.x
 				start_y = event.y
 				orig_x = root.winfo_x()
@@ -128,8 +129,8 @@ class Notes():
 
 			def on_drag(event):
 				orig_x, orig_y = on_press(event)
-				new_x = orig_x + event.x# - start_x
-				new_y = orig_y + event.y# - start_y
+				new_x = orig_x + event.x - start_x
+				new_y = orig_y + event.y - start_y
 				#print(event.x, event.y, start_x, start_y)
 				frame.place(x = new_x, y = new_y)
 			
